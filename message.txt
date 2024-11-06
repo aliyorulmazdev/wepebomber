@@ -1,0 +1,5 @@
+Merhaba, 
+Bu bir test mesajıdır.
+Gönderim tarihi: {date}
+
+İyi günler dileriz.
