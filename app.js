@@ -3,9 +3,13 @@ const { Client, LocalAuth } = require("whatsapp-web.js");
 const fs = require("fs");
 const path = require("path");
 
+// Dualar
+const kulhuvallah = `قُلْ هُوَ اللَّهُ أَحَدٌ ﴿١﴾ اللَّهُ الصَّمَدُ ﴿٢﴾ لَمْ يَلِدْ وَلَمْ يُولَدْ ﴿٣﴾ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ ﴿٤﴾`;
+const elham = `الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ ﴿٢﴾ الرَّحْمَٰنِ الرَّحِيمِ ﴿٣﴾ مَالِكِ يَوْمِ الدِّينِ ﴿٤﴾ إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ ﴿٥﴾ اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ ﴿٦﴾ صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ ﴿٧﴾`;
+
 // Random delay için yardımcı fonksiyon (1-2 saniye arası)
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const randomDelay = () => Math.floor(Math.random() * 1000) + 1000; // 1000-2000ms arası
+const randomDelay = () => Math.floor(Math.random() * 1000) + 1000;
 
 // WhatsApp client'ı oluştur
 const client = new Client({
@@ -32,11 +36,33 @@ function readMessageTemplate() {
   }
 }
 
+// Dua okuma fonksiyonu
+async function readPrayers() {
+  console.log("\n=== Dualar Okunuyor ===\n");
+
+  // 3 Kulhuvallah
+  for (let i = 1; i <= 3; i++) {
+    console.log(`\n--- ${i}. Kulhuvallah ---`);
+    console.log(kulhuvallah);
+    await sleep(1000); // Her dua arasında 1 saniye bekle
+  }
+
+  // 1 Elham
+  console.log("\n--- Elham ---");
+  console.log(elham);
+  await sleep(1000);
+
+  console.log("\n=== Dualar Tamamlandı ===\n");
+}
+
 // Client hazır olduğunda
 client.on("ready", async () => {
   console.log("Client hazır!");
 
   try {
+    // Önce duaları oku
+    await readPrayers();
+
     // Mesaj şablonunu oku
     const messageTemplate = readMessageTemplate();
     console.log("Mesaj şablonu okundu.");
@@ -46,7 +72,7 @@ client.on("ready", async () => {
       .readFileSync(path.join(__dirname, "numbers.txt"), "utf8")
       .split("\n")
       .map((num) => num.trim())
-      .filter((num) => num); // Boş satırları filtrele
+      .filter((num) => num);
 
     console.log(`${numbers.length} numara bulundu.`);
 
@@ -72,7 +98,7 @@ client.on("ready", async () => {
     }
 
     console.log("Tüm mesajlar gönderildi.");
-    await client.destroy(); // Client'ı temiz bir şekilde kapat
+    await client.destroy();
     process.exit(0);
   } catch (err) {
     console.error("Bir hata oluştu:", err);

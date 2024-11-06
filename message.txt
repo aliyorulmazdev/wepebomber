@@ -1,5 +1,5 @@
 Merhaba, 
-Bu bir test mesajıdır.
 Gönderim tarihi: {date}
+Bu özel bir test mesajıdır.
 
 İyi günler dileriz.
